@@ -1,0 +1,39 @@
+Source: stsbl-iserv-collect-wlan-ips
+Section: misc
+Priority: optional
+Maintainer: Stadtteilschule Blankenese <repository@stsbl.de>
+Build-Depends: debhelper (>= 10)
+Build-Depends-Indep: iserv3-dev
+Standards-Version: 4.5.0
+
+Package: stsbl-iserv-collect-wlan-ips
+Architecture: all
+Depends: ${misc:Depends},
+  ${perl:Depends},
+  iserv-deploy,
+  iserv-portal,
+  iserv3-core,
+  iserv3-host,
+Description: Einsammeln von WLAN-MAC-Adressen für IServ
+ Dieses Modul erlaubt das bequeme Einsammeln der WLAN-MAC-Adressen von Geräten,
+ die über die Softwareverteilung verwaltet werden. Dies kann beispielsweise bei
+ der Intriebnahme eines neuen Klassensatzes an Notebooks verwendet werden.
+ .
+ Die LAN-MAC-Adressen werden bereits implizit bei der Neuaufnahme des Gerätes
+ über das Bootimage der Softwareverteilung erfasst.
+ .
+ Dieses Modul bringt ein spezielles Softwarepaket (WLAN-MAC-Adresse erfassen)
+ mit, dieses muss auf allen neu aufgenommen Geräten vorgemerkt werden. In den
+ Eigenschaften des Softwarepaketes muss der gewünschte Name des Gerätes
+ eingetragen werden. Bei der Ausführung des Softwarepaketes wird die MAC-
+ Adresse erfasst und sofern diese noch nicht in die Geräteverwaltung eintragen
+ ist, ein neues Gerät mit dem konfigurierten Namen erstellt.
+ .
+ Neu erstellten Einträgen eine IP-Adresse aus einem Pool zugewiesen, dieser
+ kann unter Verwaltung » System » Konfiguration » Modul: Einsammeln von
+ WLAN-MAC-Adressen » IP-Bereich für Einträge der gesammelten MAC-Adressen
+ konfiguriert werden.
+ .
+ Bitte beachten Sie die Hinweise, welche sich in der Beschreibung des
+ Softwarepaketes befinden, bei der Verwendung.
+Tag: suite::iserv, suite::iserv:portal, role::plugin
