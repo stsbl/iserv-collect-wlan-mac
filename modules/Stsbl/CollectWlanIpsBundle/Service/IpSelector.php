@@ -40,7 +40,7 @@ use Symfony\Component\HttpFoundation\IpUtils;
  */
 final class IpSelector
 {
-    private const CONFIG_VARIABLE = 'CollectWlanIpsRange';
+    private const CONFIG_VARIABLE = 'CollectWlanIPRange';
 
     /**
      * @var Config
