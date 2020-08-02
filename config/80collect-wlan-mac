@@ -1,4 +1,4 @@
-CollectWlanIPRange:
+CollectWlanMacIPRange:
 name        IP range for entries of collected MAC addresses
 description IServ creates new entries in the host management for each reported WLAN MAC address; it will assign these hosts free IPs from this range. Please use the CIDR notation and ensure that the specified range is inside a reachable LAN range.
 type        string

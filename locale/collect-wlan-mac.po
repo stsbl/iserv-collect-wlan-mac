@@ -1,6 +1,6 @@
-# TRANSLATION CATALOG OF STSBL-ISERV-COLLECT-WLAN-IPS.
+# TRANSLATION CATALOG OF STSBL-ISERV-COLLECT-WLAN-MAC.
 # Copyright (C) 2020 Stadtteilschule Blankenese
-# This file is distributed under the same license as the stsbl-iserv-collect-wlan-ips package.
+# This file is distributed under the same license as the stsbl-iserv-collect-wlan-mac package.
 # Stadtteilschule Blankenese <repository@stsbl.de>, 2020.
 
 msgid ""

@@ -1,9 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Stsbl\CollectWlanIpsBundle\DependencyInjection;
+namespace Stsbl\CollectWlanMacBundle;
 
-use IServ\CoreBundle\DependencyInjection\IServBaseExtension;
+use IServ\CoreBundle\Routing\AutoloadRoutingBundleInterface;
+use Stsbl\CollectWlanMacBundle\DependencyInjection\StsblCollectWlanMacExtension;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /*
  * The MIT License
@@ -33,6 +36,10 @@ use IServ\CoreBundle\DependencyInjection\IServBaseExtension;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-final class StsblCollectWlanIpsExtension extends IServBaseExtension
+final class StsblCollectWlanMacBundle extends Bundle implements AutoloadRoutingBundleInterface
 {
+    public function getContainerExtension(): ExtensionInterface
+    {
+        return new StsblCollectWlanMacExtension();
+    }
 }

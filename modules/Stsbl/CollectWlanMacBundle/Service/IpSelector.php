@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Stsbl\CollectWlanIpsBundle\Service;
+namespace Stsbl\CollectWlanMacBundle\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use IServ\CoreBundle\Service\Config;
 use IServ\HostBundle\Entity\Host;
 use IServ\HostBundle\Entity\HostRepository;
-use Stsbl\CollectWlanIpsBundle\Exception\NoIpAvailableException;
+use Stsbl\CollectWlanMacBundle\Exception\NoIpAvailableException;
 use Symfony\Component\HttpFoundation\IpUtils;
 
 /*
@@ -40,7 +40,7 @@ use Symfony\Component\HttpFoundation\IpUtils;
  */
 final class IpSelector
 {
-    private const CONFIG_VARIABLE = 'CollectWlanIPRange';
+    private const CONFIG_VARIABLE = 'CollectWlanMacIPRange';
 
     /**
      * @var Config
@@ -83,6 +83,7 @@ final class IpSelector
             throw new NoIpAvailableException('No IP address available.');
         }
 
+        return $ip;
     }
     /**
      * @return string|bool New IP or FALSE if out of range

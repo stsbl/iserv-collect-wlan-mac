@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Stsbl\CollectWlanIpsBundle\Exception;
+namespace Stsbl\CollectWlanMacBundle\DependencyInjection;
+
+use IServ\CoreBundle\DependencyInjection\IServBaseExtension;
 
 /*
  * The MIT License
@@ -31,6 +33,6 @@ namespace Stsbl\CollectWlanIpsBundle\Exception;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-final class NoIpAvailableException extends \Exception
+final class StsblCollectWlanMacExtension extends IServBaseExtension
 {
 }

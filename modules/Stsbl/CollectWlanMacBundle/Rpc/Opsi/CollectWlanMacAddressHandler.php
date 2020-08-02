@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Stsbl\CollectWlanIpsBundle\Rpc\Opsi;
+namespace Stsbl\CollectWlanMacBundle\Rpc\Opsi;
 
 use IServ\DeployBackendBundle\Rpc\Opsi\AbstractHandler;
 use IServ\DeployBackendBundle\Security\Authentication\ClientToken;
@@ -9,9 +9,10 @@ use IServ\HostBundle\Entity\Host;
 use IServ\HostBundle\Entity\HostRepository;
 use IServ\HostBundle\Events\HostEvents;
 use IServ\HostBundle\Util\Network;
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use Stsbl\CollectWlanIpsBundle\Service\IpSelector;
+use Stsbl\CollectWlanMacBundle\Service\IpSelector;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -43,7 +44,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-final class CollectWlanMacAddressHandler extends AbstractHandler
+final class CollectWlanMacAddressHandler extends AbstractHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
     
@@ -54,7 +55,7 @@ final class CollectWlanMacAddressHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    protected $prefix = 'collect_wlan_ips_';
+    protected $prefix = 'collect_wlan_mac_';
 
     /**
      * @var ClientToken
@@ -97,21 +98,21 @@ final class CollectWlanMacAddressHandler extends AbstractHandler
         $this->logger = new NullLogger();
     }
 
-    public function collect_wlan_ips_track(string $macAddress, string $name): string
+    public function collect_wlan_mac_track(string $macAddress, string $name): string
     {
         $deployHost = $this->clientToken->getHost();
-        
+        $macAddress = Network::canonicalizeMac($macAddress);
+
         if (!Network::isMac($macAddress, true)) {
             $this->logger->error('[Collect WLAN IPs] Invalid MAC address supplied by client "{host}": "{mac}"', [
                 'host' => $deployHost,
                 'mac' => $macAddress,
             ]);
-            
+
             return self::RESULT_FAIL;
         }
-        
-        $macAddress = Network::canonicalizeMac($macAddress);
-        
+
+
         if (null !== $hostEntity = $this->hostRepository->findOneBy(['mac' => $macAddress])) {
             $this->logger->warning('[Collect WLAN IPs] MAC address "{mac}" supplied by client "{host}" already in use by host "{host_entity}". Do not adding.', [
                 'host' => $deployHost,
@@ -123,7 +124,7 @@ final class CollectWlanMacAddressHandler extends AbstractHandler
         }
 
         try {
-            $ip = $this->selector->nextFreeIp();
+            $ipAddress = $this->selector->nextFreeIp();
         } catch (NoIpAvailableException $e) {
             $this->logger->error('[Collect WLAN IPs] Could not add host for MAC address "{mac}" supplied by client "{host}": Exception "{class}" with message "{message}" thrown..', [
                 'exception' => $e,
@@ -136,17 +137,17 @@ final class CollectWlanMacAddressHandler extends AbstractHandler
             return self::RESULT_FAIL;
         }
         
-        $wlanHost = Host::create($name, $ip)->setMac($macAddress);
+        $wlanHost = Host::create($name, $ipAddress)->setMac($macAddress);
         
         $violations = $this->validator->validate($wlanHost);
-        if (!empty($violations)) {
+        if ($violations->count() > 0) {
             $this->logger->error('[Collect WLAN IPs] Could not add host "{host_entity}" for MAC address "{mac}" supplied by client "{host}" as it causes violations: "{violations}".', [
                 'host' => $deployHost,
                 'host_entity' => $wlanHost,
                 'mac' => $macAddress,
                 'violations' => (string)$violations,
             ]);
-            
+
             return self::RESULT_FAIL;
         }
         
@@ -161,7 +162,7 @@ final class CollectWlanMacAddressHandler extends AbstractHandler
                 'host_entity' => $wlanHost,
                 'mac' => $macAddress,
             ]);
-            
+
             return self::RESULT_FAIL;
         }
 

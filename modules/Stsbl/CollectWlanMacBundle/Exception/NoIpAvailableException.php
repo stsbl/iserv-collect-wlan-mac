@@ -1,11 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Stsbl\CollectWlanIpsBundle;
-
-use Stsbl\CollectWlanIpsBundle\DependencyInjection\StsblCollectWlanIpsExtension;
-use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+namespace Stsbl\CollectWlanMacBundle\Exception;
 
 /*
  * The MIT License
@@ -35,10 +31,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-final class StsblCollectWlanIpsBundle extends Bundle
+final class NoIpAvailableException extends \Exception
 {
-    public function getContainerExtension(): ExtensionInterface
-    {
-        return new StsblCollectWlanIpsExtension();
-    }
 }

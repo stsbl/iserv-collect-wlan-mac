@@ -1,4 +1,0 @@
-services:
-    Stsbl\CollectWlanIpsBundle\:
-        resource: '../../*'
-        exclude: '../../{Entity,Resources,Tests}'

@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: false
+
+    Stsbl\CollectWlanMacBundle\:
+        resource: '../../*'
+        exclude: '../../{Entity,Resources,Tests}'

@@ -1,4 +1,4 @@
-Source: stsbl-iserv-collect-wlan-ips
+Source: stsbl-iserv-collect-wlan-mac
 Section: misc
 Priority: optional
 Maintainer: Stadtteilschule Blankenese <repository@stsbl.de>
@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 10)
 Build-Depends-Indep: iserv3-dev
 Standards-Version: 4.5.0
 
-Package: stsbl-iserv-collect-wlan-ips
+Package: stsbl-iserv-collect-wlan-mac
 Architecture: all
 Depends: ${misc:Depends},
   ${perl:Depends},
