@@ -30,9 +30,9 @@ Description: Einsammeln von WLAN-MAC-Adressen für IServ
  Adresse erfasst und sofern diese noch nicht in die Geräteverwaltung eintragen
  ist, ein neues Gerät mit dem konfigurierten Namen erstellt.
  .
- Neu erstellten Einträgen eine IP-Adresse aus einem Pool zugewiesen, dieser
- kann unter Verwaltung » System » Konfiguration » Modul: Einsammeln von
- WLAN-MAC-Adressen » IP-Bereich für Einträge der gesammelten MAC-Adressen
+ Neu erstellten Einträgen wird eine IP-Adresse aus einem Pool zugewiesen,
+ dieser kann unter Verwaltung » System » Konfiguration » Modul: Einsammeln
+ von WLAN-MAC-Adressen » IP-Bereich für Einträge der gesammelten MAC-Adressen
  konfiguriert werden.
  .
  Bitte beachten Sie die Hinweise, welche sich in der Beschreibung des
