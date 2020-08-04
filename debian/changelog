@@ -1,3 +1,9 @@
+stsbl-iserv-collect-wlan-mac (20.08.04-1) testing; urgency=medium
+
+  * Improved description
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Tue, 04 Aug 2020 23:25:05 +0200
+
 stsbl-iserv-collect-wlan-mac (20.08.02-1) testing; urgency=medium
 
   * Initial Release.
