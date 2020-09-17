@@ -12,6 +12,7 @@ use IServ\HostBundle\Util\Network;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use Stsbl\CollectWlanMacBundle\Exception\NoIpAvailableException;
 use Stsbl\CollectWlanMacBundle\Service\IpSelector;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
