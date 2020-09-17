@@ -1,3 +1,11 @@
+stsbl-iserv-collect-wlan-mac (20.09.17-1) stable; urgency=medium
+
+  * Added new rpc methods collect_wlan_mac_hostName and
+    collect_wlan_mac_inventoryNumber to retrieve data for upcoming asset
+    tag configuration
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Thu, 17 Sep 2020 06:03:46 +0200
+
 stsbl-iserv-collect-wlan-mac (20.08.04-1) testing; urgency=medium
 
   * Improved description
