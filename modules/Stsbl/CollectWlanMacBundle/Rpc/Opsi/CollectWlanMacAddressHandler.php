@@ -176,4 +176,22 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
         
         return self::RESULT_ADDED;
     }
+
+    public function collect_wlan_mac_hostName(): string
+    {
+        if (!$this->clientToken->hasHost()) {
+            return '';
+        }
+
+        return ($host = $this->clientToken->getHost()) ? $host->getIdentifier() : '';
+    }
+
+    public function collect_wlan_mac_inventoryNumber(): string
+    {
+        if (!$this->clientToken->hasHost()) {
+            return '';
+        }
+
+        return ($host = $this->clientToken->getHost()) ? ($host->getHost()->getInventoryNumber() ?? '') : '';
+    }
 }
