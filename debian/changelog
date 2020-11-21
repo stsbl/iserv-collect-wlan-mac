@@ -1,3 +1,10 @@
+stsbl-iserv-collect-wlan-mac (20.11.21-1) stable; urgency=medium
+
+  * Added RPC method to replace MAC address of host associated to deploy
+    host
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Sat, 21 Nov 2020 04:02:08 +0100
+
 stsbl-iserv-collect-wlan-mac (20.09.17-2) stable; urgency=medium
 
   * Fixed exception handling
