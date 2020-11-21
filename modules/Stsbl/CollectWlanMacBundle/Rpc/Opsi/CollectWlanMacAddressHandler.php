@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Stsbl\CollectWlanMacBundle\Rpc\Opsi;
 
+use IServ\DeployBackendBundle\Entity\Host as DeployHost;
 use IServ\DeployBackendBundle\Rpc\Opsi\AbstractHandler;
 use IServ\DeployBackendBundle\Security\Authentication\ClientToken;
 use IServ\HostBundle\Entity\Host;
@@ -99,23 +100,42 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
         $this->logger = new NullLogger();
     }
 
-    public function collect_wlan_mac_track(string $macAddress, string $name): string
+    /**
+     * Replaces of the current MAC address of the host entry associated with the deploy host with the supplied one.
+     */
+    public function collect_wlan_mac_individualise(string $macAddress): string
     {
         $deployHost = $this->clientToken->getHost();
-        $macAddress = Network::canonicalizeMac($macAddress);
-
-        if (!Network::isMac($macAddress, true)) {
-            $this->logger->error('[Collect WLAN IPs] Invalid MAC address supplied by client "{host}": "{mac}"', [
-                'host' => $deployHost,
-                'mac' => $macAddress,
-            ]);
-
+        try {
+            $macAddress = $this->validateMacAddress($macAddress, $deployHost);
+        } catch (\InvalidArgumentException $e) {
             return self::RESULT_FAIL;
         }
 
+        if (null !== $deployHost) {
+            $host = $deployHost->getHost();
+            $host->setMac($macAddress);
+
+            return $this->validateAndSaveHost($host, $deployHost, $macAddress);
+        }
+
+        // Should never happen
+        $this->logger->error('[Collect WLAN MAC] collect_wlan_mac_individualise called without deploy host for MAC address "{macAddress}".', ['macAddress' => $macAddress]);
+
+        return self::RESULT_FAIL;
+    }
+
+    public function collect_wlan_mac_track(string $macAddress, string $name): string
+    {
+        $deployHost = $this->clientToken->getHost();
+        try {
+            $macAddress = $this->validateMacAddress($macAddress, $deployHost);
+        } catch (\InvalidArgumentException $e) {
+            return self::RESULT_FAIL;
+        }
 
         if (null !== $hostEntity = $this->hostRepository->findOneBy(['mac' => $macAddress])) {
-            $this->logger->warning('[Collect WLAN IPs] MAC address "{mac}" supplied by client "{host}" already in use by host "{host_entity}". Do not adding.', [
+            $this->logger->warning('[Collect WLAN MAC] MAC address "{mac}" supplied by client "{host}" already in use by host "{host_entity}". Do not adding.', [
                 'host' => $deployHost,
                 'host_entity' => $hostEntity,
                 'mac' => $macAddress,
@@ -127,7 +147,7 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
         try {
             $ipAddress = $this->selector->nextFreeIp();
         } catch (NoIpAvailableException $e) {
-            $this->logger->error('[Collect WLAN IPs] Could not add host for MAC address "{mac}" supplied by client "{host}": Exception "{class}" with message "{message}" thrown..', [
+            $this->logger->error('[Collect WLAN MAC] Could not add host for MAC address "{mac}" supplied by client "{host}": Exception "{class}" with message "{message}" thrown..', [
                 'exception' => $e,
                 'class' => \get_class($e),
                 'message' => $e->getMessage(),
@@ -139,43 +159,8 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
         }
         
         $wlanHost = Host::create($name, $ipAddress)->setMac($macAddress);
-        
-        $violations = $this->validator->validate($wlanHost);
-        if ($violations->count() > 0) {
-            $this->logger->error('[Collect WLAN IPs] Could not add host "{host_entity}" for MAC address "{mac}" supplied by client "{host}" as it causes violations: "{violations}".', [
-                'host' => $deployHost,
-                'host_entity' => $wlanHost,
-                'mac' => $macAddress,
-                'violations' => (string)$violations,
-            ]);
 
-            return self::RESULT_FAIL;
-        }
-        
-        try {
-            $this->hostRepository->save($wlanHost);
-        } catch (\Throwable $e) {
-            $this->logger->error('[Collect WLAN IPs] Could not add host "{host_entity}" for MAC address "{mac}" supplied by client "{host}": Exception "{class}" with message "{message}" thrown..', [
-                'exception' => $e,
-                'class' => \get_class($e),
-                'message' => $e->getMessage(),
-                'host' => $deployHost,
-                'host_entity' => $wlanHost,
-                'mac' => $macAddress,
-            ]);
-
-            return self::RESULT_FAIL;
-        }
-
-        // Yip, the event object is completely useless and unused!
-        $this->dispatcher->dispatch(
-            new class
-            {
-            },
-            HostEvents::HOST_CHANGED
-        );
-        
-        return self::RESULT_ADDED;
+        return $this->validateAndSaveHost($wlanHost, $deployHost, $macAddress);
     }
 
     public function collect_wlan_mac_hostName(): string
@@ -194,5 +179,74 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
         }
 
         return ($host = $this->clientToken->getHost()) ? ($host->getHost()->getInventoryNumber() ?? '') : '';
+    }
+
+    /**
+     * @throws \InvalidArgumentException If MAC address is not valid.
+     */
+    private function validateMacAddress(
+        string $macAddress,
+        ?DeployHost $deployHost
+    ): string {
+        $macAddress = Network::canonicalizeMac($macAddress);
+
+        if (!Network::isMac($macAddress, true)) {
+            $this->logger->error(
+                '[Collect WLAN IPs] Invalid MAC address supplied by client "{host}": "{mac}"',
+                [
+                    'host' => $deployHost,
+                    'mac' => $macAddress,
+                ]
+            );
+
+            throw new \InvalidArgumentException('Invalid MAC address!');
+        }
+
+        return $macAddress;
+    }
+
+    private function validateAndSaveHost(Host $host, ?DeployHost $deployHost, string $macAddress): string
+    {
+        $violations = $this->validator->validate($host);
+        if ($violations->count() > 0) {
+            $this->logger->error(
+                '[Collect WLAN MAC] Could not add host "{host_entity}" for MAC address "{mac}" supplied by client "{host}" as it causes violations: "{violations}".',
+                [
+                    'host' => $deployHost,
+                    'host_entity' => $host,
+                    'mac' => $macAddress,
+                    'violations' => (string)$violations,
+                ]
+            );
+
+            return self::RESULT_FAIL;
+        }
+
+        try {
+            $this->hostRepository->save($host);
+        } catch (\Throwable $e) {
+            $this->logger->error(
+                '[Collect WLAN MAC] Could not add host "{host_entity}" for MAC address "{mac}" supplied by client "{host}": Exception "{class}" with message "{message}" thrown..',
+                [
+                    'exception' => $e,
+                    'class' => \get_class($e),
+                    'message' => $e->getMessage(),
+                    'host' => $deployHost,
+                    'host_entity' => $host,
+                    'mac' => $macAddress,
+                ]
+            );
+
+            return self::RESULT_FAIL;
+        }
+
+        // Yip, the event object is completely useless and unused!
+        $this->dispatcher->dispatch(
+            new class {
+            },
+            HostEvents::HOST_CHANGED
+        );
+
+        return self::RESULT_ADDED;
     }
 }
