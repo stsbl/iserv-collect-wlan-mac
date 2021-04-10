@@ -2,19 +2,18 @@ Source: stsbl-iserv-collect-wlan-mac
 Section: misc
 Priority: optional
 Maintainer: Stadtteilschule Blankenese <repository@stsbl.de>
-Build-Depends: debhelper (>= 10)
-Build-Depends-Indep: iserv-buildtools
+Build-Depends: debhelper-compat (= 13), dh-sequence-iserv, dh-sequence-stsbl
 Standards-Version: 4.5.0
 
 Package: stsbl-iserv-collect-wlan-mac
 Architecture: all
-Depends: ${misc:Depends},
-  ${perl:Depends},
-  iserv-deploy,
-  iserv-portal,
-  iserv3-core,
-  iserv3-host,
-  winst-stsbl-collect-wlan-mac,
+Depends: iserv-deploy,
+         iserv-portal,
+         iserv3-core,
+         iserv3-host,
+         winst-stsbl-collect-wlan-mac,
+         ${misc:Depends},
+         ${perl:Depends}
 Description: Einsammeln von WLAN-MAC-Adressen für IServ
  Dieses Modul erlaubt das bequeme Einsammeln der WLAN-MAC-Adressen von Geräten,
  die über die Softwareverteilung verwaltet werden. Dies kann beispielsweise bei
