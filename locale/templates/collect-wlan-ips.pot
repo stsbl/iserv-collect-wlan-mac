@@ -30,5 +30,5 @@ msgid ""
 msgstr ""
 
 #: config/80collect-wlan-ips
-msgid "Module: Collect WLAN IP addresses"
+msgid "Module: Collect WLAN MAC addresses"
 msgstr ""

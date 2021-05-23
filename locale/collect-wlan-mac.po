@@ -34,5 +34,5 @@ msgstr ""
 "sicher, dass sich der angegebene Bereich im erreichbaren LAN befindet."
 
 #: config/80collect-wlan-ips
-msgid "Module: Collect WLAN IP addresses"
+msgid "Module: Collect WLAN MAC addresses"
 msgstr "Modul: Einsammeln von WLAN-MAC-Adressen"

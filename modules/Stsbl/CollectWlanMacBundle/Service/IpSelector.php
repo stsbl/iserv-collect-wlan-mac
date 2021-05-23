@@ -1,12 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\CollectWlanMacBundle\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use IServ\CoreBundle\Service\Config;
 use IServ\HostBundle\Entity\Host;
 use IServ\HostBundle\Entity\HostRepository;
+use IServ\Library\Config\Config;
 use Stsbl\CollectWlanMacBundle\Exception\NoIpAvailableException;
 use Symfony\Component\HttpFoundation\IpUtils;
 
@@ -79,16 +80,16 @@ final class IpSelector
             }
         ));
 
-        if (false === $ip) {
+        if (null === $ip) {
             throw new NoIpAvailableException('No IP address available.');
         }
 
         return $ip;
     }
     /**
-     * @return string|bool New IP or FALSE if out of range
+     * @return string|null New IP or NULL if out of range
      */
-    private function incrementIp(string $ip)
+    private function incrementIp(string $ip): ?string
     {
         // don't allow .0 or .255 IPs as XP doesn't conform to RFCs :|
         do {
@@ -97,7 +98,7 @@ final class IpSelector
 
         # check if the IP is still inside the range
         if (!IpUtils::checkIp($ip, $this->config->get(self::CONFIG_VARIABLE))) {
-            return false;
+            return null;
         }
 
         return $ip;

@@ -4,6 +4,15 @@ services:
         autowire: true
         public: false
 
+        bind:
+            $logger: '@stsbl.collect_wlan_mac.module_logger'
+
     Stsbl\CollectWlanMacBundle\:
         resource: '../../*'
         exclude: '../../{Entity,Resources,Tests}'
+
+    stsbl.collect_wlan_mac.module_logger:
+        class: IServ\CoreBundle\Logger\ModuleLogger
+        bind:
+            $module: 'Collect WLAN MAC'
+            $logger: '@monolog.logger'

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\CollectWlanMacBundle\Rpc\Opsi;
@@ -49,11 +50,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 final class CollectWlanMacAddressHandler extends AbstractHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
-    
+
     private const RESULT_FAIL = 'fail';
     private const RESULT_NOOP = 'noop';
     private const RESULT_ADDED = 'added';
-    
+
     /**
      * {@inheritDoc}
      */
@@ -68,7 +69,7 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
      * @var EventDispatcherInterface
      */
     private $dispatcher;
-    
+
     /**
      * @var HostRepository
      */
@@ -120,7 +121,7 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
         }
 
         // Should never happen
-        $this->logger->error('[Collect WLAN MAC] collect_wlan_mac_individualise called without deploy host for MAC address "{macAddress}".', ['macAddress' => $macAddress]);
+        $this->logger->error('collect_wlan_mac_individualise called without deploy host for MAC address "{macAddress}".', ['macAddress' => $macAddress]);
 
         return self::RESULT_FAIL;
     }
@@ -135,19 +136,19 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
         }
 
         if (null !== $hostEntity = $this->hostRepository->findOneBy(['mac' => $macAddress])) {
-            $this->logger->warning('[Collect WLAN MAC] MAC address "{mac}" supplied by client "{host}" already in use by host "{host_entity}". Do not adding.', [
+            $this->logger->warning('MAC address "{mac}" supplied by client "{host}" already in use by host "{host_entity}". Do not adding.', [
                 'host' => $deployHost,
                 'host_entity' => $hostEntity,
                 'mac' => $macAddress,
             ]);
-            
+
             return self::RESULT_NOOP;
         }
 
         try {
             $ipAddress = $this->selector->nextFreeIp();
         } catch (NoIpAvailableException $e) {
-            $this->logger->error('[Collect WLAN MAC] Could not add host for MAC address "{mac}" supplied by client "{host}": Exception "{class}" with message "{message}" thrown..', [
+            $this->logger->error('Could not add host for MAC address "{mac}" supplied by client "{host}": Exception "{class}" with message "{message}" thrown..', [
                 'exception' => $e,
                 'class' => \get_class($e),
                 'message' => $e->getMessage(),
@@ -157,7 +158,7 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
 
             return self::RESULT_FAIL;
         }
-        
+
         $wlanHost = Host::create($name, $ipAddress)->setMac($macAddress);
 
         return $this->validateAndSaveHost($wlanHost, $deployHost, $macAddress);
@@ -192,7 +193,7 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
 
         if (!Network::isMac($macAddress, true)) {
             $this->logger->error(
-                '[Collect WLAN IPs] Invalid MAC address supplied by client "{host}": "{mac}"',
+                'Invalid MAC address supplied by client "{host}": "{mac}"',
                 [
                     'host' => $deployHost,
                     'mac' => $macAddress,
@@ -210,7 +211,7 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
         $violations = $this->validator->validate($host);
         if ($violations->count() > 0) {
             $this->logger->error(
-                '[Collect WLAN MAC] Could not add host "{host_entity}" for MAC address "{mac}" supplied by client "{host}" as it causes violations: "{violations}".',
+                'Could not add host "{host_entity}" for MAC address "{mac}" supplied by client "{host}" as it causes violations: "{violations}".',
                 [
                     'host' => $deployHost,
                     'host_entity' => $host,
@@ -226,7 +227,7 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
             $this->hostRepository->save($host);
         } catch (\Throwable $e) {
             $this->logger->error(
-                '[Collect WLAN MAC] Could not add host "{host_entity}" for MAC address "{mac}" supplied by client "{host}": Exception "{class}" with message "{message}" thrown..',
+                'Could not add host "{host_entity}" for MAC address "{mac}" supplied by client "{host}": Exception "{class}" with message "{message}" thrown..',
                 [
                     'exception' => $e,
                     'class' => \get_class($e),
@@ -242,7 +243,7 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
 
         // Yip, the event object is completely useless and unused!
         $this->dispatcher->dispatch(
-            new class {
+            new class() {
             },
             HostEvents::HOST_CHANGED
         );
