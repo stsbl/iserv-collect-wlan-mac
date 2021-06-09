@@ -1,3 +1,14 @@
+stsbl-iserv-collect-wlan-mac (21.06.09.1) testing; urgency=medium
+
+  * Fixed Build-Depends
+  * Moved to iservinstall
+  * Updated copyright
+  * Fixed deprecations and rectored code, fixed module name, introduced
+    module logger
+  * Fixed registering module logger
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Wed, 09 Jun 2021 22:55:44 +0200
+
 stsbl-iserv-collect-wlan-mac (20.11.21-1) stable; urgency=medium
 
   * Added RPC method to replace MAC address of host associated to deploy
