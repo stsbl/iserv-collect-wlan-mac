@@ -12,6 +12,7 @@ Depends: iserv-deploy,
          iserv-portal,
          iserv3-core,
          iserv3-host,
+         stsbl-iserv3-maintenance,
          winst-stsbl-collect-wlan-mac,
          ${misc:Depends},
          ${perl:Depends}
