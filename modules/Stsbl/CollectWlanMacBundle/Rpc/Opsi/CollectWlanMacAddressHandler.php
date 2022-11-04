@@ -60,43 +60,13 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
      */
     protected $prefix = 'collect_wlan_mac_';
 
-    /**
-     * @var ClientToken
-     */
-    private $clientToken;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    /**
-     * @var HostRepository
-     */
-    private $hostRepository;
-
-    /**
-     * @var IpSelector
-     */
-    private $selector;
-
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-
     public function __construct(
-        ClientToken $clientToken,
-        EventDispatcherInterface $dispatcher,
-        HostRepository $hostRepository,
-        IpSelector $selector,
-        ValidatorInterface $validator
+        private readonly ClientToken $clientToken,
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly HostRepository $hostRepository,
+        private readonly IpSelector $selector,
+        private readonly ValidatorInterface $validator,
     ) {
-        $this->clientToken = $clientToken;
-        $this->dispatcher = $dispatcher;
-        $this->hostRepository = $hostRepository;
-        $this->selector = $selector;
-        $this->validator = $validator;
 
         $this->logger = new NullLogger();
     }

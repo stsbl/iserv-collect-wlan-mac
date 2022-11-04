@@ -43,20 +43,10 @@ final class IpSelector
 {
     private const CONFIG_VARIABLE = 'CollectWlanMacIPRange';
 
-    /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * @var HostRepository
-     */
-    private $hostRepository;
-
-    public function __construct(Config $config, HostRepository $hostRepository)
-    {
-        $this->config = $config;
-        $this->hostRepository = $hostRepository;
+    public function __construct(
+        private readonly Config $config,
+        private readonly HostRepository $hostRepository,
+    ) {
     }
 
     /**
