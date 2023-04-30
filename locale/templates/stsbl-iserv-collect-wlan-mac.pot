@@ -1,27 +1,22 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# TRANSLATION CATALOG OF STSBL-ISERV-COLLECT-WLAN-MAC.
+# Copyright (C) 2023 IServ GmbH
+# This file is distributed under the same license as the stsbl-iserv-collect-wlan-mac package.
+# IServ GmbH <info@iserv.eu>, 2023.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-02 01:07+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: stsbl-iserv-collect-wlan-mac\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: config/80collect-wlan-ips
+#: config/80collect-wlan-mac
 msgid "IP range for entries of collected MAC addresses"
 msgstr ""
 
-#: config/80collect-wlan-ips
+#: config/80collect-wlan-mac
 msgid ""
 "IServ creates new entries in the host management for each reported WLAN MAC "
 "address; it will assign these hosts free IPs from this range. Please use the "
@@ -29,6 +24,6 @@ msgid ""
 "range."
 msgstr ""
 
-#: config/80collect-wlan-ips
+#: config/80collect-wlan-mac
 msgid "Module: Collect WLAN MAC addresses"
 msgstr ""
