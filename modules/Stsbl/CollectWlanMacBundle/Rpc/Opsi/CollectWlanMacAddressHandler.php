@@ -213,7 +213,7 @@ final class CollectWlanMacAddressHandler extends AbstractHandler implements Logg
 
         // Yip, the event object is completely useless and unused!
         $this->dispatcher->dispatch(
-            new class() {
+            new class () {
             },
             HostEvents::HOST_CHANGED
         );
