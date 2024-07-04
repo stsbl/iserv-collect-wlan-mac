@@ -2,7 +2,6 @@
 # Copyright (C) 2020 Stadtteilschule Blankenese
 # This file is distributed under the same license as the stsbl-iserv-collect-wlan-mac package.
 # Stadtteilschule Blankenese <repository@stsbl.de>, 2020.
-
 msgid ""
 msgstr ""
 "Project-Id-Version: stsbl-iserv-collect-wlan-ips\n"
@@ -17,22 +16,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: config/80collect-wlan-ips
+#: config/80collect-wlan-mac
 msgid "IP range for entries of collected MAC addresses"
 msgstr "IP-Bereich für Einträge gesammelter MAC-Adressen"
 
-#: config/80collect-wlan-ips
+#: config/80collect-wlan-mac
 msgid ""
 "IServ creates new entries in the host management for each reported WLAN MAC "
 "address; it will assign these hosts free IPs from this range. Please use the "
 "CIDR notation and ensure that the specified range is inside a reachable LAN "
 "range."
 msgstr ""
-"IServ erstellt neue Einträge in der Geräteverwaltung für jede gemeldete "
-"WLAN-MAC-Adresse - diesen Geräten werden freie IP-Adresse aus diesem "
-"Bereich zugewiesen. Bitte benutzen Sie die CIDR-Notation und stellen Sie "
-"sicher, dass sich der angegebene Bereich im erreichbaren LAN befindet."
+"IServ erstellt neue Einträge in der Geräteverwaltung für jede gemeldete WLAN-"
+"MAC-Adresse - diesen Geräten werden freie IP-Adresse aus diesem Bereich "
+"zugewiesen. Bitte benutzen Sie die CIDR-Notation und stellen Sie sicher, "
+"dass sich der angegebene Bereich im erreichbaren LAN befindet."
 
-#: config/80collect-wlan-ips
+#: config/80collect-wlan-mac
 msgid "Module: Collect WLAN MAC addresses"
 msgstr "Modul: Einsammeln von WLAN-MAC-Adressen"
